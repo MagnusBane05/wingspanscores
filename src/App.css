@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+.player-card-outer {
+  display: flex;
+  flex-direction: column;
+  background-color: #A9BADB;
+  border-radius: 10px;
+}
+
+.player-card-inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-card {
+  margin: 10px;
+  padding: 10px;
+  background-color: #8997B3;
+  border-radius: 10px;
+}
