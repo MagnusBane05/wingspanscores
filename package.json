@@ -3,17 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "chart.js": "^4.4.7",
+    "primereact": "^10.8.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^7.0.2",
+    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-api": "cd api && flask run --no-debugger",
+    "start-api": "cd api && flask run",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -36,5 +41,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.15",
+    "tailwindcss": "^3.4.15"
+  }
 }

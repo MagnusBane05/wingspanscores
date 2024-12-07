@@ -1,7 +1,7 @@
 import time
 from flask import Flask
 from flask.json.provider import DefaultJSONProvider
-from WingspanScores import getPlayerCard
+from WingspanScores import getPlayerCard, getJSONEloHistory, getPlayers
 import numpy as np
 
 
@@ -22,10 +22,14 @@ class CustomizedFlask(Flask):
 
 app = CustomizedFlask(__name__)
 
-@app.route('/time')
-def get_current_time():
-    return { 'time': time.time() }
-
 @app.route('/playerCard/<string:player>')
-def get_player_card(player="Evan"):
+def get_player_card(player):
     return getPlayerCard(player)
+
+@app.route('/eloHistory')
+def get_elo_history():
+    return getJSONEloHistory()
+
+@app.route('/playerNames')
+def get_players():
+    return getPlayers()

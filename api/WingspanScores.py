@@ -4,6 +4,7 @@ import numpy as np
 from tqdm import tqdm
 import math
 from pprint import pprint
+import json
 
 STARTING_ELO = 1500
 k = 32
@@ -15,15 +16,29 @@ CATEGORIES = {
     'Eggs': 'Eggs',
     'Food_on_Cards': 'Food on Cards',
     'Tucked_Cards': 'Tucked Cards',
-    'Total': 'Total',
+    'Total': 'Total Score',
     'Elo': 'Elo',
     'Win_Streak': 'Win Streak',
     'Wins': 'Wins',
-    'Elo_Gain': 'Elo Gain'
+    'Elo_Gain': 'Single Game Elo Gain'
+}
+
+BEST_TITLES = {
+    'Birds': 'Most Bird Points',
+    'Bonus_Cards': 'Most Bonus Card Points',
+    'EndofRound_Goals': 'Most End of Round Goal Points',
+    'Eggs': 'Most Eggs',
+    'Food_on_Cards': 'Most Food on Cards',
+    'Tucked_Cards': 'Most Tucked Cards',
+    'Total': 'Highest Total Score',
+    'Elo': 'Highest Elo',
+    'Win_Streak': 'Longest Win Streak',
+    'Wins': 'Number of Wins',
+    'Elo_Gain': 'Highest Elo Gained in Single Game'
 }
 
 def loadScores(): 
-    filename = 'WingspanScores.csv'
+    filename = './WingspanScores.csv'
     field_types = '<U21, int, int, int, int, int, int, int, int, int, <U21, int'
     data = np.genfromtxt(filename, dtype=field_types, names=True, delimiter=',')
     return data
@@ -119,6 +134,18 @@ def displayEloHistoryChart(elo_history, names=[]):
     plt.title('Elo Rating History')
     plt.show()
 
+def getJSONEloHistory():
+    data = loadScores()
+    elo_history = generateEloHistoryByGameId(data)
+    lst = []
+    for player in elo_history.dtype.names:
+        lst.append({
+            'player': player,
+            'history': elo_history[player].tolist()
+             })
+    jsn = json.dumps(lst)
+    return jsn
+
 def getPlayerBest(data, elo_history, player, category):
     def nameEqualsString(x):
         return x['Name'] == player
@@ -149,8 +176,6 @@ def getPlayerBest(data, elo_history, player, category):
     elif category == 'Elo_Gain':
         elos = elo_history[player]
         elo_changes = [x-elos[i] for i,x in enumerate(elos[1:])]
-        for i,x in enumerate(elos[1:]):
-            elo_change = x-elos[i]
         game_id = np.argmax(elo_changes)+1
         best_score = elo_changes[game_id-1]
     else:
@@ -198,7 +223,8 @@ def getPlayerAchievements(player, n=3):
             "category": category, 
             "best": best_score,
             "rank": sorted_player_rankings[i][1],
-            "game_id": game_id})
+            "game_id": game_id,
+            "best_title": BEST_TITLES[category]})
 
     return achievements
     
@@ -216,10 +242,15 @@ def getPlayerCard(player):
 def displayPlayerCard(player):
     pprint(getPlayerCard(player))
 
+def getPlayers():
+    data = loadScores()
+    return np.unique(data["Name"]).tolist()
+
 
 if __name__ == '__main__':
-    displayPlayerCard('Bassam')
+    # displayPlayerCard('Bassam')
     # data = loadScores()
     # pairings = generatePairs(data)
     # elo_history = generateEloHistoryByGameId(data)
-    # displayEloHistoryChart(elo_history)#, names=["Marlee", "Bassam"])
+    # displayEloHistoryChart(elo_history)#, names=["Marlee", "Evan", "Angela", "Keith"])
+    getJSONEloHistory()
