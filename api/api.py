@@ -1,7 +1,6 @@
-import time
 from flask import Flask
 from flask.json.provider import DefaultJSONProvider
-from WingspanScores import getPlayerCard, getJSONEloHistory, getPlayers
+import service
 import numpy as np
 
 
@@ -24,12 +23,16 @@ app = CustomizedFlask(__name__)
 
 @app.route('/playerCard/<string:player>')
 def get_player_card(player):
-    return getPlayerCard(player)
+    return service.getPlayerCard(player)
 
 @app.route('/eloHistory')
 def get_elo_history():
-    return getJSONEloHistory()
+    return service.getJSONEloHistory()
 
 @app.route('/playerNames')
 def get_players():
-    return getPlayers()
+    return service.getPlayers()
+
+@app.route('/gamesList')
+def get_game_list():
+    return service.getGames()

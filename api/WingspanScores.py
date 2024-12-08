@@ -1,10 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
 import numpy as np
-from tqdm import tqdm
-import math
-from pprint import pprint
-import json
 
 STARTING_ELO = 1500
 k = 32
@@ -98,7 +93,8 @@ def generateEloHistoryOfGame(data, previous_elos):
         elo_history = updateEloHistoryEntry(pairings, player_names, elo_history, i)
     return elo_history
 
-def generateEloHistoryByGameId(data):
+def generateEloHistoryByGameId():
+    data = loadScores()
     gameIds = np.unique(data["Game_ID"])
     player_names = np.unique(data["Name"])
     elo_history = np.rec.fromarrays([[STARTING_ELO]*(gameIds.shape[0]+1)]*len(player_names), names=','.join(player_names))
@@ -133,18 +129,6 @@ def displayEloHistoryChart(elo_history, names=[]):
     plt.ylabel('Elo Rating')
     plt.title('Elo Rating History')
     plt.show()
-
-def getJSONEloHistory():
-    data = loadScores()
-    elo_history = generateEloHistoryByGameId(data)
-    lst = []
-    for player in elo_history.dtype.names:
-        lst.append({
-            'player': player,
-            'history': elo_history[player].tolist()
-             })
-    jsn = json.dumps(lst)
-    return jsn
 
 def getPlayerBest(data, elo_history, player, category):
     def nameEqualsString(x):
@@ -227,30 +211,12 @@ def getPlayerAchievements(player, n=3):
             "best_title": BEST_TITLES[category]})
 
     return achievements
-    
-def getPlayerCard(player):
-    achievements = getPlayerAchievements(player)
-    playerCard = []
-    for achievement in achievements:
-        category_name = CATEGORIES[achievement['category']]
-        renamed_achievement = achievement
-        renamed_achievement['category'] = category_name
-        playerCard.append(renamed_achievement)
-    return playerCard
-
-
-def displayPlayerCard(player):
-    pprint(getPlayerCard(player))
-
-def getPlayers():
-    data = loadScores()
-    return np.unique(data["Name"]).tolist()
 
 
 if __name__ == '__main__':
+    pass
     # displayPlayerCard('Bassam')
     # data = loadScores()
     # pairings = generatePairs(data)
     # elo_history = generateEloHistoryByGameId(data)
     # displayEloHistoryChart(elo_history)#, names=["Marlee", "Evan", "Angela", "Keith"])
-    getJSONEloHistory()

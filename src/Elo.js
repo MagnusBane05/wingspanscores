@@ -26,9 +26,31 @@ function EloGraph({players}) {
         setChartData(data);
     }, [players]);
 
+    useEffect(() => {
+        const options = {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Game number',
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Elo',
+                    }
+                }
+            }
+        }
+        setChartOptions(options);
+    }, []);
+
 
     return (
-        <Chart type="line" data={chartData} class="w-full md:w-20rem"/>
+        <div className='flex justify-center'>
+            <Chart type="line" data={chartData} options={chartOptions} className='w-4/5'/>
+        </div>
     )
   }
 
@@ -45,7 +67,7 @@ function Elo() {
     return (
         <div>
             <MultiSelect value={selectedPlayers} onChange={(e) => {setSelectedPlayers(e.value)}} options={players} 
-                placeholder="Select players to display in graph" display='chip' filter  className="w-full md:w-20rem"/>
+                placeholder="Select players to display in graph" display='chip' filter className="w-full"/>
             <EloGraph players={selectedPlayers}/>
         </div>
     );
