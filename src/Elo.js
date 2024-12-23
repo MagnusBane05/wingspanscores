@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { MultiSelect } from 'primereact/multiselect';
 import { Chart } from 'primereact/chart'
 
 
 function EloGraph({players}) {
-    const [eloHistory, setEloHistory] = useState([]);
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
 
-    useEffect(() => {
-        fetch('/eloHistory').then(res => res.json()).then(data => {
-            setEloHistory(data);
-        });
-    }, []);
+    const { isPending, error, data: eloHistory, isFetching } = useQuery({
+        queryKey: ['eloHistory'],
+        queryFn: async () => {
+            const response = await fetch('/eloHistory');
+            return await response.json();
+        }
+    });
 
     useEffect(() => {
+        if (eloHistory == null) {
+            return;
+        }
         const data = {
             labels: eloHistory.length > 0 ? Array.from(eloHistory[0]["history"].keys()) : [],
             datasets: eloHistory.filter((x) => players.includes(x.player)).map(x => ({
@@ -24,7 +29,7 @@ function EloGraph({players}) {
             }))
         };
         setChartData(data);
-    }, [players]);
+    }, [players, eloHistory]);
 
     useEffect(() => {
         const options = {
@@ -46,6 +51,9 @@ function EloGraph({players}) {
         setChartOptions(options);
     }, []);
 
+    if (isPending) return 'Loading elo history...';
+
+    if (error) return 'An error has occurred while loading elo history: ' + error.message;
 
     return (
         <div className='flex justify-center'>
@@ -55,14 +63,19 @@ function EloGraph({players}) {
   }
 
 function Elo() {
-    const [players, setPlayers] = useState([]);
     const [selectedPlayers, setSelectedPlayers] = useState([]);
-  
-    useEffect(() => {
-      fetch('/playerNames').then(res => res.json()).then(data => {
-        setPlayers(data);
-      });
-    }, []);
+
+    const { isPending, error, data: players, isFetching } = useQuery({
+        queryKey: ['players'],
+        queryFn: async () => {
+            const response = await fetch('/playerNames');
+            return await response.json();
+        }
+    });
+
+    if (isPending) return 'Loading players...';
+
+    if (error) return 'An error has occurred while loading players: ' + error.message;
 
     return (
         <div>

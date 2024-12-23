@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -8,18 +9,19 @@ import { InputIcon } from 'primereact/inputicon';
 import { useNavigate } from 'react-router';
 
 function Games() {
-    const [games, setGames] = useState([]);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     });
     const [selectedGame, setSelectedGame] = useState(null);
 
-    useEffect(() => {
-        fetch("/gamesList").then(res => res.json()).then(data => {
-            setGames(data);
-        });
-    }, []);
+    const { isPending, error, data: games, isFetching } = useQuery({
+        queryKey: ['gamesList'],
+        queryFn: async () => {
+            const response = await fetch('/gamesList');
+            return await response.json();
+        }
+    });
 
     const onGlobalFilterChange = (e) => {
         const value = e.target.value;
@@ -47,7 +49,7 @@ function Games() {
     let navigate = useNavigate();
 
     const onSelectionChange = (e) => {
-        setSelectedGame(e.value)
+        // setSelectedGame(e.value)
         navigate(`./${e.value.id}`)
     };
 
@@ -63,7 +65,7 @@ function Games() {
                 <Column field="id" header="Game number" sortable filterField="id"></Column>
                 <Column field="numPlayers" header="Number of players" sortable filterField="numPlayers"></Column>
                 <Column field="winner" header="Winner" sortable filterField="winner"></Column>
-                <Column field="topScore" header="Top Score"  filterField="topScore"></Column>
+                <Column field="topScore" header="Top Score" sortable filterField="topScore"></Column>
             </DataTable>
         </div>
     );
