@@ -2,10 +2,9 @@ import WingspanScores
 import json
 import numpy as np
 
-
-
 def getJSONEloHistory():
-    elo_history = WingspanScores.generateEloHistoryByGameId()
+    data = WingspanScores.loadScores()
+    elo_history = WingspanScores.generateEloHistoryByGameId(data)
     lst = []
     for player in elo_history.dtype.names:
         lst.append({
@@ -42,4 +41,28 @@ def getGames():
         })
     return games
 
-getGames()
+def getLeaderboards():
+    data = WingspanScores.loadScores()
+    categories = WingspanScores.CATEGORIES
+    elo_history = WingspanScores.generateEloHistoryByGameId(data)
+    players = elo_history.dtype.names
+    category_rankings = WingspanScores.getCategoryRankings(data, categories, elo_history)
+    leaderboards = {}
+    for category in category_rankings.dtype.names:
+        category_leaderboard = []
+        for player in players:
+            player_category_data = {}
+            player_category_data["player"] = player
+            rank, score, game_id = WingspanScores.getPlayerRank(player, category, category_rankings[category], data, elo_history)
+            player_category_data["rank"] = rank
+            player_category_data["score"] = score
+            player_category_data["game_id"] = game_id
+            category_leaderboard.append(player_category_data)
+        leaderboards[category] = category_leaderboard
+    return leaderboards
+
+def getCategories():
+    return {
+        'categories' : WingspanScores.CATEGORIES,
+        'best_titles': WingspanScores.BEST_TITLES
+    }

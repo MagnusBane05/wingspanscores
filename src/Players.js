@@ -12,7 +12,7 @@ function PlayerCard({data}) {
       <h3 className='prose prose-lg text-white'>{data.category}</h3>
       <p className='prose text-white'>
         {data.best_title}: {data.best}<br />
-        {/* Rank: {data.rank} */}
+        Rank: {data.rank}
       </p>
     </Card>
   );

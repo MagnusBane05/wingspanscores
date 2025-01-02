@@ -36,3 +36,11 @@ def get_players():
 @app.route('/gamesList')
 def get_game_list():
     return service.getGames()
+
+@app.route('/leaderboards')
+def get_leaderboards():
+    return service.getLeaderboards()
+
+@app.route('/categories')
+def get_categories():
+    return service.getCategories()

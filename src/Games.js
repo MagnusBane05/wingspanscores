@@ -5,7 +5,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
-import { InputIcon } from 'primereact/inputicon';
 import { useNavigate } from 'react-router';
 
 function Games() {
@@ -13,7 +12,6 @@ function Games() {
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     });
-    const [selectedGame, setSelectedGame] = useState(null);
 
     const { isPending, error, data: games, isFetching } = useQuery({
         queryKey: ['gamesList'],
@@ -35,9 +33,9 @@ function Games() {
 
     const renderHeader = () => {
         return (
-            <div className="flex justify-end">
+            <div className='flex justify-between'>
+                <span className="text-xl text-900 font-bold">Game history</span>
                 <IconField iconPosition="left">
-                    <InputIcon className="pi pi-search" />
                     <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Winner search" />
                 </IconField>
             </div>
@@ -49,23 +47,22 @@ function Games() {
     let navigate = useNavigate();
 
     const onSelectionChange = (e) => {
-        // setSelectedGame(e.value)
         navigate(`./${e.value.id}`)
     };
 
     return (
         <div className='flex justify-center'>
-            <DataTable value={games} stripedRows 
+            <DataTable value={games} stripedRows size='small'
             paginator rows={10} rowsPerPageOptions={[10, 25, 50, 100]} 
             removableSort 
             header={header}
             filters={filters} globalFilterFields={['winner']}
-            selectionMode="single" selection={selectedGame} onSelectionChange={onSelectionChange}
+            selectionMode="single" onSelectionChange={onSelectionChange}
             className='w-4/5'>
                 <Column field="id" header="Game number" sortable filterField="id"></Column>
                 <Column field="numPlayers" header="Number of players" sortable filterField="numPlayers"></Column>
                 <Column field="winner" header="Winner" sortable filterField="winner"></Column>
-                <Column field="topScore" header="Top Score" sortable filterField="topScore"></Column>
+                <Column field="topScore" header="Winning Score" sortable filterField="topScore"></Column>
             </DataTable>
         </div>
     );

@@ -29,7 +29,7 @@ BEST_TITLES = {
     'Elo': 'Highest Elo',
     'Win_Streak': 'Longest Win Streak',
     'Wins': 'Number of Wins',
-    'Elo_Gain': 'Highest Elo Gained in Single Game'
+    'Elo_Gain': 'Most Elo Gained in Single Game'
 }
 
 def loadScores(): 
@@ -63,6 +63,9 @@ def updateElo(elos, game, k, d):
     player1_expected_result = 1./(1+10**((player2_old_elo-player1_old_elo)/d))
     player2_expected_result = 1./(1+10**((player1_old_elo-player2_old_elo)/d))
 
+    # if player1 == 'Keith' or player2 == 'Keith':
+    #     print(f'{player1} vs {player2}: expected result is {player1_expected_result}')
+
     player1_elo_change = (result - player1_expected_result)*k
     player2_elo_change = ((1-result) - player2_expected_result)*k
 
@@ -93,8 +96,7 @@ def generateEloHistoryOfGame(data, previous_elos):
         elo_history = updateEloHistoryEntry(pairings, player_names, elo_history, i)
     return elo_history
 
-def generateEloHistoryByGameId():
-    data = loadScores()
+def generateEloHistoryByGameId(data):
     gameIds = np.unique(data["Game_ID"])
     player_names = np.unique(data["Name"])
     elo_history = np.rec.fromarrays([[STARTING_ELO]*(gameIds.shape[0]+1)]*len(player_names), names=','.join(player_names))
@@ -184,6 +186,13 @@ def getCategoryRankings(data, categories, elo_history):
 
     return np.rec.fromarrays(rankings, names=','.join(categories))
 
+def getPlayerRank(player, category, category_ranking, data, elo_history):
+    player_ranking = np.where(category_ranking==player)[0][0]
+    player_best, game_id = getPlayerBest(data, elo_history, player, category)
+    while player_ranking > 0 and player_best == getPlayerBest(data, elo_history, category_ranking[player_ranking-1], category)[0]:
+        player_ranking -= 1
+    return player_ranking + 1, player_best, game_id
+
 
 def getPlayerAchievements(player, n=3):
     data = loadScores()
@@ -216,7 +225,5 @@ def getPlayerAchievements(player, n=3):
 if __name__ == '__main__':
     pass
     # displayPlayerCard('Bassam')
-    # data = loadScores()
-    # pairings = generatePairs(data)
-    # elo_history = generateEloHistoryByGameId(data)
+    # elo_history = generateEloHistoryByGameId()
     # displayEloHistoryChart(elo_history)#, names=["Marlee", "Evan", "Angela", "Keith"])
