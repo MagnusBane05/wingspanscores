@@ -15,7 +15,9 @@ CATEGORIES = {
     'Elo': 'Elo',
     'Win_Streak': 'Win Streak',
     'Wins': 'Wins',
-    'Elo_Gain': 'Single Game Elo Gain'
+    'Elo_Gain': 'Single Game Elo Gain',
+    'Win_Rate': 'Win Rate',
+    'Average_Score': 'Average Score'
 }
 
 BEST_TITLES = {
@@ -29,7 +31,9 @@ BEST_TITLES = {
     'Elo': 'Highest Elo',
     'Win_Streak': 'Longest Win Streak',
     'Wins': 'Number of Wins',
-    'Elo_Gain': 'Most Elo Gained in Single Game'
+    'Elo_Gain': 'Most Elo Gained in Single Game',
+    'Win_Rate': 'Highest Win Rate',
+    'Average_Score': 'Highest Average Score'
 }
 
 def loadScores(): 
@@ -164,6 +168,18 @@ def getPlayerBest(data, elo_history, player, category):
         elo_changes = [x-elos[i] for i,x in enumerate(elos[1:])]
         game_id = np.argmax(elo_changes)+1
         best_score = elo_changes[game_id-1]
+    elif category == 'Win_Rate':
+        places = data[nameEqualsString(data)]['Place']
+        unique, counts = np.unique(places, return_counts=True)
+        places_counts = dict(zip(unique, counts))
+        wins = places_counts[1] if 1 in places_counts.keys() else 0
+        num_games = places.shape[0]
+        best_score = f'{(100*wins / num_games):.2f}%'
+    elif category == 'Average_Score':
+        scores = data[nameEqualsString(data)]['Total']
+        scores_sum = sum(scores)
+        num_games = scores.shape[0]
+        best_score = int(scores_sum / num_games)
     else:
         values = data[nameEqualsString(data)][category]
         max_index = np.argmax(values)
@@ -224,6 +240,6 @@ def getPlayerAchievements(player, n=3):
 
 if __name__ == '__main__':
     pass
-    # displayPlayerCard('Bassam')
-    # elo_history = generateEloHistoryByGameId()
-    # displayEloHistoryChart(elo_history)#, names=["Marlee", "Evan", "Angela", "Keith"])
+    # data = loadScores()
+    # elo_history = generateEloHistoryByGameId(data)
+    # player_win_rate = getPlayerBest(data, elo_history, 'Evan', 'Win_Rate')
