@@ -11,6 +11,8 @@ function Leaderboard() {
     let navigate = useNavigate();
 
     const onSelectionChange = (e) => {
+        const gameId = e.value.game_id
+        if (gameId <= 0) return;
         navigate(`/games/${e.value.game_id}`)
     };
 
@@ -19,7 +21,8 @@ function Leaderboard() {
         queryFn: async () => {
             const response = await fetch('/leaderboards');
             return await response.json();
-        }
+        },
+        staleTime: 300000
     });
 
     const { isPending: isCategoriesPending, error: categoriesError, data: categories, isFetching: isCategoriesFetching } = useQuery({
@@ -27,7 +30,8 @@ function Leaderboard() {
         queryFn: async () => {
             const response = await fetch('/categories');
             return await response.json();
-        }
+        },
+        staleTime: 300000
     });
 
     const error = [leaderboardsError, categoriesError]

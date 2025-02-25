@@ -55,7 +55,7 @@ def generatePairs(data):
             result = 0.5 if places[i] == places[j] else int(places[i] < places[j])
             pairs.append((name, names[j], result))
             j += 1
-    return np.array(pairs, dtype=[('Player 1', '<U21'), ('Player 2', '<U21'), ('Result', 'int')])
+    return np.array(pairs, dtype=[('Player 1', '<U21'), ('Player 2', '<U21'), ('Result', 'float')])
 
 def updateElo(elos, game, k, d):
     player1 = game[0]
@@ -240,6 +240,6 @@ def getPlayerAchievements(player, n=3):
 
 if __name__ == '__main__':
     pass
-    # data = loadScores()
-    # elo_history = generateEloHistoryByGameId(data)
+    data = loadScores()
+    elo_history = generateEloHistoryByGameId(data)
     # player_win_rate = getPlayerBest(data, elo_history, 'Evan', 'Win_Rate')

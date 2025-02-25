@@ -37,6 +37,10 @@ def get_players():
 def get_game_list():
     return service.getGames()
 
+@app.route('/games/<int:gid>')
+def get_game(gid):
+    return service.getGameById(gid)
+
 @app.route('/leaderboards')
 def get_leaderboards():
     return service.getLeaderboards()

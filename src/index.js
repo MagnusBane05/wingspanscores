@@ -6,6 +6,7 @@ import App from './App';
 import Players from './Players';
 import Games from './Games';
 import Elo from './Elo';
+import Game from './Game';
 import Leaderboard from './Leaderboard';
 import reportWebVitals from './reportWebVitals';
 
@@ -18,6 +19,7 @@ root.render(
         <Route path='games' element={<Games />} />
         <Route path='elo' element={<Elo />} />
         <Route path='leaderboards' element={<Leaderboard />} />
+        <Route path='games/:gid' element={<Game />} />
       </Route>
     </Routes>
   </BrowserRouter>

@@ -18,7 +18,8 @@ function Games() {
         queryFn: async () => {
             const response = await fetch('/gamesList');
             return await response.json();
-        }
+        },
+        staleTime: 300000
     });
 
     const onGlobalFilterChange = (e) => {

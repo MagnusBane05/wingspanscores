@@ -13,7 +13,8 @@ function EloGraph({players}) {
         queryFn: async () => {
             const response = await fetch('/eloHistory');
             return await response.json();
-        }
+        },
+        staleTime: 300000
     });
 
     useEffect(() => {
@@ -70,7 +71,8 @@ function Elo() {
         queryFn: async () => {
             const response = await fetch('/playerNames');
             return await response.json();
-        }
+        },
+        staleTime: 300000
     });
 
     if (isPending) return 'Loading players...';

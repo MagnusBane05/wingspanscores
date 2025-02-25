@@ -41,6 +41,37 @@ def getGames():
         })
     return games
 
+def getGameById(game_id):
+    data = WingspanScores.loadScores()
+    game_data = data[data["Game_ID"] == game_id]
+    game_info = {
+        'id': game_id,
+        'numPlayers': int(game_data["Players_in_game"][0]),
+        'winner': str(game_data[game_data["Place"] == 1]["Name"][0]),
+        'topScore': int(game_data[game_data["Place"] == 1]["Total"][0]),
+        'playerInfo': []
+    }
+    elo_history = WingspanScores.generateEloHistoryByGameId(data)
+    for player_data in game_data:
+        player_info = {
+            'playerName': str(player_data['Name']),
+            'place': int(player_data['Place']),
+            'total': int(player_data['Total']),
+            'birds': int(player_data['Birds']),
+            'bonusCards': int(player_data['Bonus_Cards']),
+            'endOfRoundGoals': int(player_data['EndofRound_Goals']),
+            'eggs': int(player_data['Eggs']),
+            'foodOnCards': int(player_data['Food_on_Cards']),
+            'tuckedCards': int(player_data['Tucked_Cards']),
+            'eloBefore': elo_history[game_id-1][player_data['Name']],
+            'eloAfter': elo_history[game_id][player_data['Name']],
+            'eloChange': elo_history[game_id][player_data['Name']] - elo_history[game_id-1][player_data['Name']]
+        }
+        game_info['playerInfo'].append(player_info)
+    return game_info
+
+
+
 def getLeaderboards():
     data = WingspanScores.loadScores()
     categories = WingspanScores.CATEGORIES
