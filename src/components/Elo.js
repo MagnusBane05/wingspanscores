@@ -40,9 +40,7 @@ function EloGraph({players}) {
             history: playerData.history.filter((_, index) => indices.has(index)),
             indices: [...indices]
         }));
-    }
-    
-    
+    }    
 
     useEffect(() => {
         if (eloHistory == null) {

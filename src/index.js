@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router";
 import './index.css';
 import App from './App';
-import Players from './Players';
-import Games from './Games';
-import Elo from './Elo';
-import Game from './Game';
-import Leaderboard from './Leaderboard';
+import Players from './components/Players';
+import Games from './components/Games';
+import Elo from './components/Elo';
+import Game from './components/Game';
+import Leaderboard from './components/Leaderboard';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
