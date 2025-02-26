@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MultiSelect } from 'primereact/multiselect';
 import { Chart } from 'primereact/chart'
+import { useNavigate } from 'react-router';
 
 
 function EloGraph({players}) {
     const [chartData, setChartData] = useState({});
     const [chartOptions, setChartOptions] = useState({});
+
+    let navigate = useNavigate();
 
     const { isPending, error, data: eloHistory, isFetching } = useQuery({
         queryKey: ['eloHistory'],
@@ -17,13 +20,38 @@ function EloGraph({players}) {
         staleTime: 300000
     });
 
+    function filterEloHistoryGames() {
+        if (!eloHistory || eloHistory.length === 0) return eloHistory;
+    
+        let filteredByPlayers = eloHistory.filter(x => players.includes(x.player));
+        if (filteredByPlayers.length === 0) return filteredByPlayers;
+    
+        let indices = new Set();
+    
+        filteredByPlayers[0].history.forEach((game, index, arr) => {
+            if (index === 0 || game !== arr[index - 1] || 
+                filteredByPlayers.some(({ history }) => history[index] !== history[index - 1])) {
+                indices.add(index);
+            }
+        });
+    
+        return filteredByPlayers.map(playerData => ({
+            ...playerData,
+            history: playerData.history.filter((_, index) => indices.has(index)),
+            indices: [...indices]
+        }));
+    }
+    
+    
+
     useEffect(() => {
         if (eloHistory == null) {
             return;
         }
+        const filteredHistory = filterEloHistoryGames();
         const data = {
-            labels: eloHistory.length > 0 ? Array.from(eloHistory[0]["history"].keys()) : [],
-            datasets: eloHistory.filter((x) => players.includes(x.player)).map(x => ({
+            labels: filteredHistory.length > 0 ? filteredHistory[0]["indices"] : [],
+            datasets: filteredHistory.map(x => ({
                 label: x.player,
                 data: x.history,
                 tension: 0.3
@@ -34,6 +62,14 @@ function EloGraph({players}) {
 
     useEffect(() => {
         const options = {
+            onClick: (e, element) => {
+                if (element.length > 0) {
+                    console.log(e);
+                    console.log(element);
+                    let ind = e.chart.tooltip.title[0];
+                    navigate(`/games/${ind}`);
+                }
+            },
             scales: {
                 x: {
                     title: {
