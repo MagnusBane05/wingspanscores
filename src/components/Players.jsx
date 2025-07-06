@@ -24,13 +24,13 @@ function PlayerCardContainer() {
   const [selectedPlayer, setSelectedPlayer] = useState('Evan');
 
   useEffect(() => {
-    fetch('/playerNames').then(res => res.json()).then(data => {
+    fetch('/api/playerNames').then(res => res.json()).then(data => {
       setPlayers(data);
     });
   }, []);
 
   useEffect(() => {
-    fetch(`/playerCard/${selectedPlayer}`).then(res => res.json()).then(data => {
+    fetch(`/api/playerCard/${selectedPlayer}`).then(res => res.json()).then(data => {
       setCardData(data);
     });
   }, [selectedPlayer]);
@@ -59,7 +59,7 @@ function PlayerList() {
   useEffect(() => {
     for (var player in players) {
       let newCardData = cardData;
-      fetch(`/playerCard/${player}`).then(res => res.json()).then(data => {
+      fetch(`/api/playerCard/${player}`).then(res => res.json()).then(data => {
         newCardData[player] = data;
         setCardData(newCardData);
       });
@@ -67,7 +67,7 @@ function PlayerList() {
   }, []);
   
   useEffect(() => {
-    fetch('/playerNames').then(res => res.json()).then(data => {
+    fetch('/api/playerNames').then(res => res.json()).then(data => {
       setPlayers(data);
     });
   }, []);

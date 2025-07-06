@@ -28,3 +28,12 @@ __pycache__
 
 #vscode
 .vscode
+
+#docker
+Dockerfile.*
+.dockerignore
+
+
+#temp
+/deployment
+docker-compose.yml

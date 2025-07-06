@@ -16,7 +16,7 @@ function Games() {
     const { isPending, error, data: games, isFetching } = useQuery({
         queryKey: ['gamesList'],
         queryFn: async () => {
-            const response = await fetch('/gamesList');
+            const response = await fetch('/api/gamesList');
             return await response.json();
         },
         staleTime: 300000
