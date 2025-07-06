@@ -14,7 +14,7 @@ function EloGraph({players}) {
     const { isPending, error, data: eloHistory, isFetching } = useQuery({
         queryKey: ['eloHistory'],
         queryFn: async () => {
-            const response = await fetch('/eloHistory');
+            const response = await fetch('/api/eloHistory');
             return await response.json();
         },
         staleTime: 300000
@@ -62,8 +62,6 @@ function EloGraph({players}) {
         const options = {
             onClick: (e, element) => {
                 if (element.length > 0) {
-                    console.log(e);
-                    console.log(element);
                     let ind = e.chart.tooltip.title[0];
                     navigate(`/games/${ind}`);
                 }
@@ -103,7 +101,7 @@ function Elo() {
     const { isPending, error, data: players, isFetching } = useQuery({
         queryKey: ['players'],
         queryFn: async () => {
-            const response = await fetch('/playerNames');
+            const response = await fetch('/api/playerNames');
             return await response.json();
         },
         staleTime: 300000

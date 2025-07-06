@@ -19,7 +19,7 @@ function Leaderboard() {
     const { isPending: isLeaderBoardsPending, error: leaderboardsError, data: leaderboards, isFetching: isLeaderboardsFetching } = useQuery({
         queryKey: ['leaderboards'],
         queryFn: async () => {
-            const response = await fetch('/leaderboards');
+            const response = await fetch('/api/leaderboards');
             return await response.json();
         },
         staleTime: 300000
@@ -28,7 +28,7 @@ function Leaderboard() {
     const { isPending: isCategoriesPending, error: categoriesError, data: categories, isFetching: isCategoriesFetching } = useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
-            const response = await fetch('/categories');
+            const response = await fetch('/api/categories');
             return await response.json();
         },
         staleTime: 300000

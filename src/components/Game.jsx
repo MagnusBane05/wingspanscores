@@ -12,7 +12,7 @@ export default function Game() {
     const { isPending, error, data: gameData, isFetching } = useQuery({
         queryKey: ['game'],
         queryFn: async () => {
-            const response = await fetch(`/games/${params.gid}`);
+            const response = await fetch(`/api/games/${params.gid}`);
             return await response.json();
         }
     });

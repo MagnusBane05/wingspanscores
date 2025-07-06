@@ -21,30 +21,30 @@ class CustomizedFlask(Flask):
 
 app = CustomizedFlask(__name__)
 
-@app.route('/playerCard/<string:player>')
+@app.route('/api/playerCard/<string:player>')
 def get_player_card(player):
     return service.getPlayerCard(player)
 
-@app.route('/eloHistory')
+@app.route('/api/eloHistory')
 def get_elo_history():
     return service.getJSONEloHistory()
 
-@app.route('/playerNames')
+@app.route('/api/playerNames')
 def get_players():
     return service.getPlayers()
 
-@app.route('/gamesList')
+@app.route('/api/gamesList')
 def get_game_list():
     return service.getGames()
 
-@app.route('/games/<int:gid>')
+@app.route('/api/games/<int:gid>')
 def get_game(gid):
     return service.getGameById(gid)
 
-@app.route('/leaderboards')
+@app.route('/api/leaderboards')
 def get_leaderboards():
     return service.getLeaderboards()
 
-@app.route('/categories')
+@app.route('/api/categories')
 def get_categories():
     return service.getCategories()
