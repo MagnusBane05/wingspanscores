@@ -4,8 +4,8 @@ Prerequisites:
 
 Steps to run the application:
 1. Clone the project into a directory by using the command: `git clone https://github.com/MagnusBane05/wingspanscores.git`
-2. Run the project with the command: `docker-compose up`
-3. Navigate to the project directory: `cd wingspanscores`
+2. Navigate to the project directory: `cd wingspanscores`
+3. Run the project with the command: `docker-compose up`
 4. Navigate to `http://localhost:3000/` in your browser
 
 Troubleshooting:  
