@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tailwindcss()
   ],
   server: {
@@ -12,8 +12,5 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:5000'
     }
-  },
-  build: {
-    outDir: 'build', // CRA's default build output
   }
 });
