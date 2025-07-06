@@ -77,6 +77,7 @@ export default function Game() {
                     <Column field="eggs" header="Eggs" sortable></Column>
                     <Column field="foodOnCards" header="Food on cards" sortable></Column>
                     <Column field="tuckedCards" header="Tucked cards" sortable></Column>
+                    <Column field="nectar" header="Nectar" sortable></Column>
                     <Column field="eloBefore" header="Elo before" sortable></Column>
                     <Column field="eloAfter" header="Elo after" sortable></Column>
                     <Column field="eloChange" header="Elo won/lost" body={eloChangeTemplate} sortable></Column>

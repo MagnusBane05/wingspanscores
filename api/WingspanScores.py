@@ -38,7 +38,7 @@ BEST_TITLES = {
 
 def loadScores(): 
     filename = './WingspanScores.csv'
-    field_types = '<U21, int, int, int, int, int, int, int, int, int, <U21, int'
+    field_types = '<U21, int, int, int, int, int, int, int, int, int, int, <U21, int'
     data = np.genfromtxt(filename, dtype=field_types, names=True, delimiter=',')
     return data
 
