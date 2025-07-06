@@ -63,6 +63,7 @@ def getGameById(game_id):
             'eggs': int(player_data['Eggs']),
             'foodOnCards': int(player_data['Food_on_Cards']),
             'tuckedCards': int(player_data['Tucked_Cards']),
+            'nectar': int(player_data['Nectar']),
             'eloBefore': elo_history[game_id-1][player_data['Name']],
             'eloAfter': elo_history[game_id][player_data['Name']],
             'eloChange': elo_history[game_id][player_data['Name']] - elo_history[game_id-1][player_data['Name']]
