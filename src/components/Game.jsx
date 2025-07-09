@@ -68,8 +68,8 @@ export default function Game() {
             <BreadCrumb className='bg-transparent pt-0' model={items} home={home} />
             <div className='flex flex-wrap justify-center w-4/5'>
                 <DataTable value={gameData['playerInfo']} stripedRows header={header}>
-                    {gameData['columns'].filter((col) => col.key !== "eloChange").map((col) => (
-                        <Column key={col.key} field={col.key} header={col.title} />
+                    {gameData['columns'].filter((col) => col.key !== "eloChange").sort((col1, col2) => col1.order - col2.order).map((col) => (
+                        <Column key={col.key} field={col.key} header={col.title} sortable/>
                     ))}
                     <Column field="eloChange" header={gameData['columns'].filter((col) => col.key === "eloChange")[0].title} body={eloChangeTemplate} sortable></Column>
                 </DataTable>

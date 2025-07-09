@@ -117,11 +117,6 @@ def getGameById(game_id):
             'order': 9
         }, 
         {
-            'key': 'nectar',
-            'title': 'Nectar points',
-            'order': 10
-        }, 
-        {
             'key': 'eloBefore',
             'title': 'Elo before',
             'order': 11
@@ -137,6 +132,13 @@ def getGameById(game_id):
             'order': 13
         }
     ]
+    if game_info['playerInfo'][0]['nectar'] != -1:
+        game_info['columns'].append(
+            {
+                'key': 'nectar',
+                'title': 'Nectar points',
+                'order': 10
+            })
     return game_info
 
 
