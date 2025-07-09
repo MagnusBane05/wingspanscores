@@ -12,7 +12,8 @@ CATEGORIES = {
     'Food_on_Cards': 'Food on Cards',
     'Tucked_Cards': 'Tucked Cards',
     'Total': 'Total Score',
-    'Elo': 'Elo',
+    'Elo_current': 'Elo (current)',
+    'Elo_all_time': 'Elo (all-time)',
     'Win_Streak': 'Win Streak',
     'Wins': 'Wins',
     'Elo_Gain': 'Single Game Elo Gain',
@@ -28,7 +29,8 @@ BEST_TITLES = {
     'Food_on_Cards': 'Most Food on Cards',
     'Tucked_Cards': 'Most Tucked Cards',
     'Total': 'Highest Total Score',
-    'Elo': 'Highest Elo',
+    'Elo_current': 'Highest Elo (current)',
+    'Elo_all_time': 'Highest Elo (all-time)',
     'Win_Streak': 'Longest Win Streak',
     'Wins': 'Number of Wins',
     'Elo_Gain': 'Most Elo Gained in Single Game',
@@ -142,9 +144,11 @@ def getPlayerBest(data, elo_history, player, category):
     
     best_score = -1
     game_id = -1
-    if category == 'Elo':
+    if category == 'Elo_all_time':
         game_id = np.argmax(elo_history[player])
         best_score = elo_history[player][game_id]
+    elif category == 'Elo_current':
+        best_score = elo_history[player][-1]
     elif category == 'Win_Streak':
         places = data[nameEqualsString(data)]['Place']
         longest_streak = 0
