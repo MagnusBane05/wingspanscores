@@ -49,7 +49,8 @@ def getGameById(game_id):
         'numPlayers': int(game_data["Players_in_game"][0]),
         'winner': str(game_data[game_data["Place"] == 1]["Name"][0]),
         'topScore': int(game_data[game_data["Place"] == 1]["Total"][0]),
-        'playerInfo': []
+        'playerInfo': [],
+        'columns': []
     }
     elo_history = WingspanScores.generateEloHistoryByGameId(data)
     for player_data in game_data:
@@ -69,6 +70,73 @@ def getGameById(game_id):
             'eloChange': elo_history[game_id][player_data['Name']] - elo_history[game_id-1][player_data['Name']]
         }
         game_info['playerInfo'].append(player_info)
+    game_info['columns'] = [
+        {
+            'key': 'playerName',
+            'title': 'Player name',
+            'order': 1
+        }, 
+        {
+            'key': 'place',
+            'title': 'Place',
+            'order': 2
+        }, 
+        {
+            'key': 'total',
+            'title': 'Total score',
+            'order': 3
+        }, 
+        {
+            'key': 'birds',
+            'title': 'Birds points',
+            'order': 4
+        }, 
+        {
+            'key': 'bonusCards',
+            'title': 'Bonus card points',
+            'order': 5
+        }, 
+        {
+            'key': 'endOfRoundGoals',
+            'title': 'End of round goal points',
+            'order': 6
+        }, 
+        {
+            'key': 'eggs',
+            'title': 'Eggs',
+            'order': 7
+        }, 
+        {
+            'key': 'foodOnCards',
+            'title': 'Food on cards',
+            'order': 8
+        }, 
+        {
+            'key': 'tuckedCards',
+            'title': 'Tucked cards',
+            'order': 9
+        }, 
+        {
+            'key': 'nectar',
+            'title': 'Nectar points',
+            'order': 10
+        }, 
+        {
+            'key': 'eloBefore',
+            'title': 'Elo before',
+            'order': 11
+        }, 
+        {
+            'key': 'eloAfter',
+            'title': 'Elo after',
+            'order': 12
+        }, 
+        {
+            'key': 'eloChange',
+            'title': 'Elo won/lost',
+            'order': 13
+        }
+    ]
     return game_info
 
 

@@ -68,19 +68,10 @@ export default function Game() {
             <BreadCrumb className='bg-transparent pt-0' model={items} home={home} />
             <div className='flex flex-wrap justify-center w-4/5'>
                 <DataTable value={gameData['playerInfo']} stripedRows header={header}>
-                    <Column field="playerName" header="Player name" sortable></Column>
-                    <Column field="place" header="Place" sortable></Column>
-                    <Column field="total" header="Total score" sortable></Column>
-                    <Column field="birds" header="Birds points" sortable></Column>
-                    <Column field="bonusCards" header="Bonus card points" sortable></Column>
-                    <Column field="endOfRoundGoals" header="End of round goal points" sortable></Column>
-                    <Column field="eggs" header="Eggs" sortable></Column>
-                    <Column field="foodOnCards" header="Food on cards" sortable></Column>
-                    <Column field="tuckedCards" header="Tucked cards" sortable></Column>
-                    <Column field="nectar" header="Nectar" sortable></Column>
-                    <Column field="eloBefore" header="Elo before" sortable></Column>
-                    <Column field="eloAfter" header="Elo after" sortable></Column>
-                    <Column field="eloChange" header="Elo won/lost" body={eloChangeTemplate} sortable></Column>
+                    {gameData['columns'].filter((col) => col.key !== "eloChange").map((col) => (
+                        <Column key={col.key} field={col.key} header={col.title} />
+                    ))}
+                    <Column field="eloChange" header={gameData['columns'].filter((col) => col.key === "eloChange")[0].title} body={eloChangeTemplate} sortable></Column>
                 </DataTable>
             </div>
         </div>
