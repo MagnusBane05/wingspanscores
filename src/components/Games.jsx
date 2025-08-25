@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
@@ -6,6 +6,7 @@ import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { useNavigate } from 'react-router';
+import ExpansionTag from './ExpansionTag'
 
 function Games() {
     const [globalFilterValue, setGlobalFilterValue] = useState('');
@@ -31,6 +32,16 @@ function Games() {
         setFilters(_filters);
         setGlobalFilterValue(value);
     };
+
+    const expansionTemplate = (game) => {
+        return (
+            <div className="card flex flex-wrap gap-2">
+                {game.expansions.map((value, index) => (
+                    <ExpansionTag expansion={value} key={index} />
+                ))}
+            </div>
+        );
+    }
 
     const renderHeader = () => {
         return (
@@ -64,6 +75,7 @@ function Games() {
                 <Column field="numPlayers" header="Number of players" sortable filterField="numPlayers"></Column>
                 <Column field="winner" header="Winner" sortable filterField="winner"></Column>
                 <Column field="topScore" header="Winning Score" sortable filterField="topScore"></Column>
+                <Column field="expansions" header="Expansions" sortable filterField="expansions" body={expansionTemplate}></Column>
             </DataTable>
         </div>
     );

@@ -3,7 +3,7 @@ import numpy as np
 
 STARTING_ELO = 1500
 k = 32
-d = 400
+d = 800
 CATEGORIES = {
     'Birds': 'Birds',
     'Bonus_Cards': 'Bonus Cards',
@@ -36,6 +36,13 @@ BEST_TITLES = {
     'Elo_Gain': 'Most Elo Gained in Single Game',
     'Win_Rate': 'Highest Win Rate',
     'Average_Score': 'Highest Average Score'
+}
+
+EXPANSIONS = {
+    'Base': ['Base Game'],
+    'European': ['Base Game', 'European Expansion'],
+    'Asia': ['Base Game', 'European Expansion', 'Asia Expansion'],
+    'Oceania': ['Base Game', 'European Expansion', 'Asia Expansion', 'Oceania Expansion']
 }
 
 def loadScores(): 

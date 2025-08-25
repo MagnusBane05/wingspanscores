@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from "react-router";
 import { useQuery } from '@tanstack/react-query';
 import { DataTable } from 'primereact/datatable';
@@ -6,6 +5,7 @@ import { Column } from 'primereact/column';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import { Link } from 'react-router-dom';
 import { FaAngleUp, FaAngleDown, FaAngleDoubleUp, FaAngleDoubleDown } from "react-icons/fa";
+import ExpansionTag from './ExpansionTag'
 
 export default function Game() {
     let params = useParams();
@@ -35,7 +35,14 @@ export default function Game() {
 
     const header = () => {
         return (
-            <span>Game {params.gid}</span>
+            <div className="flex justify-between">
+                <h1 className="text-2xl">Game {params.gid}</h1>
+                <span className="flex gap-2">
+                    {gameData.expansions.map((value, index) => (
+                    <ExpansionTag expansion={value} key={index} />
+                ))}
+                </span>
+            </div>
         );
     };
 
@@ -65,7 +72,7 @@ export default function Game() {
 
     return (
         <div className='flex flex-col items-center'>
-            <BreadCrumb className='bg-transparent pt-0' model={items} home={home} />
+            <BreadCrumb model={items} home={home} />
             <div className='flex flex-wrap justify-center w-4/5'>
                 <DataTable value={gameData['playerInfo']} stripedRows header={header}>
                     {gameData['columns'].filter((col) => col.key !== "eloChange").sort((col1, col2) => col1.order - col2.order).map((col) => (

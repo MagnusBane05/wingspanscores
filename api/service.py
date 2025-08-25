@@ -37,7 +37,8 @@ def getGames():
             'id': game_id,
             'numPlayers': int(game_data["Players_in_game"][0]),
             'winner': str(game_data[game_data["Place"] == 1]["Name"][0]),
-            'topScore': int(game_data[game_data["Place"] == 1]["Total"][0])
+            'topScore': int(game_data[game_data["Place"] == 1]["Total"][0]),
+            'expansions': WingspanScores.EXPANSIONS[str(game_data['Expansion'][0])]
         })
     return games
 
@@ -49,6 +50,7 @@ def getGameById(game_id):
         'numPlayers': int(game_data["Players_in_game"][0]),
         'winner': str(game_data[game_data["Place"] == 1]["Name"][0]),
         'topScore': int(game_data[game_data["Place"] == 1]["Total"][0]),
+        'expansions': WingspanScores.EXPANSIONS[str(game_data['Expansion'][0])],
         'playerInfo': [],
         'columns': []
     }
